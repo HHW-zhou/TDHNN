@@ -287,3 +287,30 @@ class GAT(nn.Module):
 
         out = self.classifier(x)
         return out, x, None, None
+
+class MLP(nn.Module):
+    def __init__(self, args, dropout=0.5, bias=True):
+
+        in_dim = args.in_dim
+        hid_dim = args.hid_dim 
+        out_dim = args.out_dim
+
+        super(MLP, self).__init__()
+
+        self.mlp = nn.Sequential(
+            nn.Linear(in_dim, hid_dim),
+            nn.ReLU(inplace = True),
+            nn.Linear(hid_dim, hid_dim),
+            nn.ReLU(inplace = True),
+            nn.Linear(hid_dim, hid_dim),
+            nn.ReLU(inplace = True),
+            nn.Linear(hid_dim, out_dim)
+        )
+  
+
+    def forward(self,data,args):
+        x = data['fts']           
+
+        out = self.mlp(x)            
+
+        return out, None, None, None
